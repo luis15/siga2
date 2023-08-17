@@ -1,0 +1,11 @@
+{
+  "name": "sigaapi",
+  "version": "1.0.0",
+  "description": "Api SIGA",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "João Oliveira",
+  "license": "ISC"
+}
