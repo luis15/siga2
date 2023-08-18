@@ -36,4 +36,4 @@ class MatriculaController{
     }
 }
 
-module.exports = MatriculasController;
+module.exports = MatriculaController;

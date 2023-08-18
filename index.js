@@ -1,6 +1,6 @@
 const express = require('express');
 const DisciplinaController = require('./controller/disciplina');
-const MatriculaController = require('../controller/matricula');
+const MatriculaController = require('./controller/matriculaController');
 const db = require('./util/db');
 
 const app = express();
@@ -9,12 +9,7 @@ const port = 8000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-  db.query("SELECT * FROM `disciplinas`",(err, result) => {
-    if (err) throw err;
-    res.send(result);
-  });
-});
+//Disciplinas
 
 app.get('/disciplinas', async (req, res) => {
   const Disciplina = new DisciplinaController(req, res);
@@ -41,13 +36,6 @@ app.delete('/disciplina/:id',async (req, res) => {
 });
 
 //    Matriculas
-app.get('/', (req, res) =>{
-  db.query("SELECT * FROM `matriculas`",(err, result) => {
-    if (err) throw err;
-    res.send(result);
-  });
-});
-
 app.get('/matriculas', async (req, res) =>{
     const Matricula = new MatriculaController(req, res);
     await Matricula.getAll();
