@@ -1,11 +1,16 @@
 {
-  "name": "sigaapi",
+  "name": "api---alunos",
   "version": "1.0.0",
-  "description": "Api SIGA",
-  "main": "index.js",
+  "description": "",
+  "main": "alunos.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
-  "author": "João Oliveira",
-  "license": "ISC"
+  "author": "Gustavo Gutierrez",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2",
+    "mysql": "^2.18.1"
+  }
 }
