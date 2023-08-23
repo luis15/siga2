@@ -1,37 +1,43 @@
-const express = require('express');
-const router = express.Router();
-const Aluno = require('../models/alunoModel');
+const AlunoModel = require('../models/alunoModel');
 
-router.get('/', (req, res) => {
-  Aluno.getAll((error, result) => {
-    if (error) throw error;
-    res.json(result);
-  });
-});
+class Aluno{
+  constructor(req,res){
+    this.req = req;
+    this.res = res;
+    this.AlunoModel = new AlunoModel();
+  }
 
-router.post('/', (req, res) => {
-  const novoAluno = req.body;
-  Aluno.create(novoAluno, (error, result) => {
-    if (error) throw error;
-    res.status(201).json({ message: 'Aluno criado com sucesso', alunoId: result.insertId });
-  });
-});
+  async getAll(){
+    this.res.json(await this.AlunoModel.getAlunos());
+  }
 
-router.put('/:id', (req, res) => {
-  const id = req.params.id;
-  const alunoAtualizado = req.body;
-  Aluno.update(id, alunoAtualizado, (error, result) => {
-    if (error) throw error;
-    res.json({ message: 'Aluno atualizado com sucesso', alunoId: id });
-  });
-});
+  async getAluno(id){
+    this.res.json(await this.AlunoModel.getAluno(id));
+  }
 
-router.delete('/:id', (req, res) => {
-  const id = req.params.id;
-  Aluno.delete(id, (error, result) => {
-    if (error) throw error;
-    res.json({ message: 'Aluno excluído com sucesso', alunoId: id });
-  });
-});
+  async createAluno(){
+    const nome = this.req.body.nome;
+    const ra = this.req.body.ra;
+    const senha = this.req.body.senha;
+    const cpf = this.req.body.cpf;
+    const endereco = this.req.body.endereco;
+    this.res.json(await this.AlunoModel.createAluno({nome, ra, senha, cpf, endereco}));
+  }
 
-module.exports = router;
+  async deleteAluno(id){
+    this.res.json(await this.AlunoModel.deleteAluno(id));
+  }
+
+  async updateAluno(id){
+    const nome = this.req.body.nome;
+    const ra = this.req.body.ra;
+    const senha = this.req.body.senha;
+    const cpf = this.req.body.cpf;
+    const endereco = this.req.body.endereco;
+    this.res.json(await this.AlunoModel.updateAluno(id, {nome, ra, senha, cpf, endereco}));
+  }
+
+
+}
+
+module.exports = Aluno;

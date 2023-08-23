@@ -1,21 +1,51 @@
 const db = require('../util/db');
 
-const Aluno = {};
+class AlunoModel{
 
-Aluno.getAll = (callback) => {
-  db.query('SELECT * FROM alunos', callback);
-};
+  async getAlunos(){
+    return new Promise((resolve, reject) => {
+      db.query('SELECT * FROM alunos', (error, results) => {
+        if (error) reject(error);
+        resolve(results);
+      });
+    })                   
+  }
 
-Aluno.create = (novoAluno, callback) => {
-  db.query('INSERT INTO alunos SET ?', novoAluno, callback);
-};
+  async getAluno(id){
+    return new Promise((resolve, reject) => {
+      db.query('SELECT * FROM alunos WHERE id = ?', id, (error, results) => {
+        if (error) reject(error);
+        resolve(results);
+      });
+    })
+  }
 
-Aluno.update = (id, alunoAtualizado, callback) => {
-  db.query('UPDATE alunos SET ? WHERE id = ?', [alunoAtualizado, id], callback);
-};
+  async createAluno(novoAluno){
+    return new Promise((resolve, reject) => {
+      db.query('INSERT INTO alunos SET ?', novoAluno, (error, results) => {
+        if (error) reject(error);
+        resolve(results);
+      });
+    })
+  }
 
-Aluno.delete = (id, callback) => {
-  db.query('DELETE FROM alunos WHERE id = ?', id, callback);
-};
+  async deleteAluno(id){
+    return new Promise((resolve, reject) => {
+      db.query('DELETE FROM alunos WHERE id = ?', id, (error, results) => {
+        if (error) reject(error);
+        resolve(results);
+      });
+    })
+  }
 
-module.exports = Aluno;
+  async updateAluno(id, alunoAtualizado){
+    return new Promise((resolve, reject) => {
+      db.query('UPDATE alunos SET ? WHERE id = ?', [alunoAtualizado, id], (error, results) => {
+        if (error) reject(error);
+        resolve(results);
+      });
+    })
+  }
+
+}
+module.exports = AlunoModel;
