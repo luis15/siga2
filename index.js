@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
-const alunoController = require('./controllers/aluno');
+const alunoController = require('/controllers/aluno');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
