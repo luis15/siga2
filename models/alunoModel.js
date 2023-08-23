@@ -52,7 +52,8 @@ class AlunoModel{
             resolve(results);
         });
     });
-  }
+  } 
+
 }
 
 module.exports = AlunoModel;
