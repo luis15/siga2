@@ -28,14 +28,11 @@ class Aluno{
     this.res.json(await this.AlunoModel.deleteAluno(id));
   }
 
-  async updateAluno(id){
-    const nome = this.req.body.nome;
-    const ra = this.req.body.ra;
-    const senha = this.req.body.senha;
-    const cpf = this.req.body.cpf;
-    const endereco = this.req.body.endereco;
-    this.res.json(await this.AlunoModel.updateAluno(id, {nome, ra, senha, cpf, endereco}));
+  async updateAluno(id) {
+    const alunoAtualizado = this.req.body;
+    this.res.json(await this.AlunoModel.updateAluno(id, alunoAtualizado));
   }
+
 
 
 }

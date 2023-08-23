@@ -38,14 +38,21 @@ class AlunoModel{
     })
   }
 
-  async updateAluno(id, alunoAtualizado){
+  async updateAluno(id, alunoAtualizado) {
+    const updateQuery = `UPDATE alunos SET ${Object.keys(alunoAtualizado).map(key => `${key} = ?`).join(', ')} WHERE id = ?`;
+    const updateValues = [...Object.values(alunoAtualizado), id];
+
     return new Promise((resolve, reject) => {
-      db.query('UPDATE alunos SET ? WHERE id = ?', [alunoAtualizado, id], (error, results) => {
-        if (error) reject(error);
-        resolve(results);
-      });
-    })
+        db.query(updateQuery, updateValues, (error, results) => {
+            if (error) reject(error);
+            resolve(results);
+        });
+    });
   }
+
+
+
+
 
 }
 module.exports = AlunoModel;
