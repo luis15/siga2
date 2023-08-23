@@ -39,6 +39,11 @@ app.delete('/disciplina/:id',async (req, res) => {
     await Disciplina.delete();
 });
 
+app.patch('/disciplina/:id',async (req, res) => {
+  const Disciplina = new DisciplinaController(req, res);
+  await Disciplina.update();
+});
+
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
