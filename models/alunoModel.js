@@ -39,9 +39,13 @@ class AlunoModel{
   }
 
   async updateAluno(id, alunoAtualizado) {
+    // Cria uma consulta SQL de atualização com os campos que serão atualizados
     const updateQuery = `UPDATE alunos SET ${Object.keys(alunoAtualizado).map(key => `${key} = ?`).join(', ')} WHERE id = ?`;
+
+    // Cria uma lista de valores para substituir os placeholders na consulta SQL
     const updateValues = [...Object.values(alunoAtualizado), id];
 
+    // Realiza a consulta SQL no banco de dados
     return new Promise((resolve, reject) => {
         db.query(updateQuery, updateValues, (error, results) => {
             if (error) reject(error);
@@ -49,10 +53,6 @@ class AlunoModel{
         });
     });
   }
-
-
-
-
-
 }
+
 module.exports = AlunoModel;
