@@ -19,9 +19,18 @@ class MatriculaModel {
         })
     }
 
-    async postMatricula(codAluno, codDisciplina,semestre) {
+    async postMatricula(codAluno, codDisciplina, semestre, notas) {
         return new Promise((resolve, reject) => {
-            bd.query('INSERT INTO matriculas (codAluno, codDisciplina, semestre) VALUES (?,?,?)', [codAluno, codDisciplina, semestre], (err, result) => {
+            bd.query('INSERT INTO matriculas (codAluno, codDisciplina, semestre, notas) VALUES (?,?,?)', [codAluno, codDisciplina, semestre, notas], (err, result) => {
+                if(err) throw err;
+                resolve(result);
+            })
+        })
+    }
+
+    async updateMatricula(id, codAluno, codDisciplina, semestre, notas) {
+        return new Promise((resolve, reject) => {
+            bd.query('UPDATE matriculas SET codAluno =?, codDisciplina =?, semestre =?, notas =? WHERE id =?', [codAluno, codDisciplina, semestre, notas, id], (err, result) => {
                 if(err) throw err;
                 resolve(result);
             })

@@ -43,22 +43,22 @@ app.get('/matriculas', async (req, res) =>{
 
 app.get('/matricula/:id', async (req, res) =>{
     const Matricula = new MatriculaController(req, res);
-    await Matricula.get();
+    await Matricula.getMatricula();
 });
 
 app.post('/matricula', async (req, res) =>{
     const Matricula = new MatriculaController(req, res);
-    await Matricula.post();
+    await Matricula.postMatricula();
 });
 
-app.patch('/matricula/:id', async (req,res) => {
+app.put('/matricula/:id', async (req,res) => {
     const Matricula = new MatriculaController(req,res);
-    await Matricula.patch();
+    await Matricula.updateMatricula();
 });
 
 app.delete('/matricula/:id', async (req, res) =>{
     const Matricula = new MatriculaController(req, res);
-    await Matricula.delete();
+    await Matricula.deleteMatricula();
 });
 
 

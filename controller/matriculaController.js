@@ -10,28 +10,46 @@ class MatriculaController{
         this.res.json(await this.matriculaModel.getMatriculas());
     }
 
-    async get(){
-        this.res.json(await this.matriculaModel.getMatricula(this.req.params.id));
+    async getMatricula(id){
+        this.res.json(await this.matriculaModel.getMatricula(id));
     }
 
-    async post(){
+    async postMatricula(){
         let codAluno = this.req.body.codAluno;
         let codDisciplina = this.req.body.codDisciplina;
         let semestre = this.req.body.semestre;
-        let result = await this.matriculaModel.postMatricula(codAluno, codDisciplina, semestre);
+        let notas = this.req.body.notas;
+        let result = [codAluno, codDisciplina, semestre, notas];
         if(result != null){
-            this.res.status(200).send({'status':'OK','idMatricula':result.insertId});
+            this.res.status(200).send({'status':'Inserido'});
+            this.res.json(await this.matriculaModel.postMatricula(codAluno,codDisciplina,semestre,notas));
         } else {
-            this.res.status(400).send({'status':'ERROR'});
+            this.res.status(400).send({'status':'ERROR post'});
         }
     }
 
-    async delete(){
-        let result = await this.matriculaModel.getMatricula(this.req.params.id);
-        if(result.length == 0){
-            this.res.status(400).send({'status':'ERROR'});
+    async updateMatricula(id){
+        let result = await this.matriculaModel.getMatricula(id);
+        let codAluno = this.req.body.codAluno;
+        let codDisciplina = this.req.body.codDisciplina;
+        let semestre = this.req.body.semestre;
+        let notas = this.req.body.notas;
+        if(result!= null){
+            this.res.status(200).send({'status':'Modificado'});
+            this.res.json(await this.matriculaModel.updateMatricula(id,codAluno,codDisciplina,semestre,notas));
+
         } else {
+            this.res.status(400).send({'status':'ERROR update'});
+        }
+    }
+
+    async delete(id){
+        let result = await this.matriculaModel.getMatricula(id);
+        if(result.length != null){
             this.res.status(200).send({'status':'Deletado'});
+            this.res.MatriculaModel.deleteMatricula(id);
+        } else {
+            this.res.status(400).send({'status':'ERROR delete'});
         }
     }
 }
