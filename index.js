@@ -1,5 +1,5 @@
 const express = require('express');
-const alunoController = require('./controllers/aluno');
+const alunoController = require('./controller/aluno');
 const DisciplinaController = require('./controller/disciplina');
 const db = require('./util/db');
 
@@ -61,7 +61,4 @@ app.delete('/deleteAluno/:id', async (req, res) => {
 app.patch('/updateAluno/:id', async (req, res) => {
   const Aluno = new alunoController(req, res);
   await Aluno.updateAluno(req.params.id);
-
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
 });
