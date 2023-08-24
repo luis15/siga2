@@ -1,8 +1,8 @@
 {
-  "name": "sigaapi",
+  "name": "api---alunos",
   "version": "1.0.0",
-  "description": "Api SIGA",
-  "main": "index.js",
+  "description": "",
+  "main": "alunos.js",
   "scripts": {
     "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
