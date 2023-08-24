@@ -1,14 +1,41 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const app = express();
 const alunoController = require('./controllers/aluno');
+const DisciplinaController = require('./controller/disciplina');
+const db = require('./util/db');
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-const PORT = 3000;
+const app = express();
+const port = 8000;
 
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.get('/disciplinas', async (req, res) => {
+  const Disciplina = new DisciplinaController(req, res);
+  await Disciplina.getAll();  
+});
+
+app.get('/disciplina/:id', async (req, res) => {
+  const Disciplina = new DisciplinaController(req, res);
+  await Disciplina.get();  
+});
+
+app.post('/disciplina',async (req, res) => {
+    const Disciplina = new DisciplinaController(req, res);
+    await Disciplina.post();
+});
+
+app.patch('/disciplinas', (req, res) => {
+    res.send('Hello World');
+});
+
+app.delete('/disciplina/:id',async (req, res) => {
+    const Disciplina = new DisciplinaController(req, res);
+    await Disciplina.delete();
+});
+
+app.patch('/disciplina/:id',async (req, res) => {
+  const Disciplina = new DisciplinaController(req, res);
+  await Disciplina.update();
 });
 
 app.get('/alunos', async (req, res) => {
@@ -34,4 +61,7 @@ app.delete('/deleteAluno/:id', async (req, res) => {
 app.patch('/updateAluno/:id', async (req, res) => {
   const Aluno = new alunoController(req, res);
   await Aluno.updateAluno(req.params.id);
+
+app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
 });

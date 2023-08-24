@@ -4,10 +4,10 @@
   "description": "",
   "main": "alunos.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Gustavo Gutierrez",
+  "author": "João Oliveira",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",
