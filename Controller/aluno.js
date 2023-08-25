@@ -1,4 +1,4 @@
-const AlunoModel = require('../models/alunoModel');
+const AlunoModel = require('../model/alunoModel');
 
 class Aluno{
   constructor(req,res){
