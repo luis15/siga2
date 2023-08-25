@@ -28,11 +28,28 @@ class Disciplina{
     }
 
     async delete(){
-        let result = await this.disciplinaModel.getDisciplina(this.req.params.id);
-        if(result.length == 0 ){
-            this.res.status(400).send({"status":"BAD REQUEST"})
+        let result = await this.disciplinaModel.deleteDisciplina(this.req.params.id);
+        if(result.affectedRows == 0 ){
+            this.res.status(400).send({"status":"ID not found"})
         }else{
             this.res.status(200).send({"status":"Deleted"})
+        };
+    }
+
+    async update(){
+        let id = this.req.params.id;
+        let mods = []
+        let params = this.req.body;
+        for(let prop in params){
+            if(params[prop].length != 0){
+                mods.push(`${prop} = '${params[prop]}'`);
+            }
+        }
+        let result = await this.disciplinaModel.updateDisciplina(id, mods);
+        if(result.affectedRows == 0 ){
+            this.res.status(400).send({"status":"Bad Request"})
+        }else{
+            this.res.status(200).send({"status":"Updated"})
         };
     }
 }
