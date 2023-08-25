@@ -1,9 +1,9 @@
-const bd = require('../util/db');
+const db = require('../util/db');
 
 class MatriculaModel {
     async getMatriculas(){
         return new Promise((resolve, reject) => {
-            bd.query('SELECT * FROM matriculas', (err, result) => {
+            db.query('SELECT * FROM matriculas', (err, result) => {
                 if(err) throw err;
                 resolve(result);
             })
@@ -12,25 +12,25 @@ class MatriculaModel {
 
     async getMatricula(id){
         return new Promise((resolve, reject) => {
-            bd.query('SELECT * FROM matriculas WHERE id =?', [id], (err, result) => {
+            db.query('SELECT * FROM matriculas WHERE id =?', [id], (err, result) => {
                 if(err) throw err;
                 resolve(result);
             })
         })
     }
 
-    async postMatricula(codAluno, codDisciplina, semestre, notas) {
+    async postMatricula(codAluno, codDisciplina, semestre) {
         return new Promise((resolve, reject) => {
-            bd.query('INSERT INTO matriculas (codAluno, codDisciplina, semestre, notas) VALUES (?,?,?)', [codAluno, codDisciplina, semestre, notas], (err, result) => {
+            db.query('INSERT INTO matriculas (codAluno, codDisciplina, semestre, notas) VALUES (?,?,?)', [codAluno, codDisciplina, semestre, notas], (err, result) => {
                 if(err) throw err;
                 resolve(result);
             })
         })
     }
 
-    async updateMatricula(id, codAluno, codDisciplina, semestre, notas) {
+    async updateMatricula(id, modification) {
         return new Promise((resolve, reject) => {
-            bd.query('UPDATE matriculas SET codAluno =?, codDisciplina =?, semestre =?, notas =? WHERE id =?', [codAluno, codDisciplina, semestre, notas, id], (err, result) => {
+            db.query('UPDATE matriculas SET ? WHERE id =?', [modification, id], (err, result) => {
                 if(err) throw err;
                 resolve(result);
             })
@@ -38,8 +38,9 @@ class MatriculaModel {
     }
 
     async deleteMatricula(id) {
+        console.log('passei aqui')
         return new Promise((resolve, reject) => {
-            bd.query('DELETE FROM matriculas WHERE id =?', [id], (err, result) => {
+            db.query('DELETE FROM matriculas WHERE id =?', [id], (err, result) => {
                 if(err) throw err;
                 resolve(result);
             })
@@ -47,4 +48,4 @@ class MatriculaModel {
     }
 }
 
-module.exports = new MatriculaModel();
+module.exports = MatriculaModel;

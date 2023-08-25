@@ -12,13 +12,13 @@ app.use(express.urlencoded({ extended: true }));
 //Disciplinas
 
 app.get('/disciplinas', async (req, res) => {
-  const Disciplina = new DisciplinaController(req, res);
-  await Disciplina.getAll();  
+    const Disciplina = new DisciplinaController(req, res);
+    await Disciplina.getAll();
 });
 
 app.get('/disciplina/:id', async (req, res) => {
-  const Disciplina = new DisciplinaController(req, res);
-  await Disciplina.get();  
+    const Disciplina = new DisciplinaController(req, res);
+    await Disciplina.get();
 });
 
 app.post('/disciplina',async (req, res) => {
@@ -36,7 +36,7 @@ app.delete('/disciplina/:id',async (req, res) => {
 });
 
 //    Matriculas
-app.get('/matriculas', async (req, res) =>{
+app.get('/matriculas', async (req, res) => {
     const Matricula = new MatriculaController(req, res);
     await Matricula.getAll();
 });
@@ -51,7 +51,7 @@ app.post('/matricula', async (req, res) =>{
     await Matricula.postMatricula();
 });
 
-app.put('/matricula/:id', async (req,res) => {
+app.patch('/matricula/:id', async (req,res) => {
     const Matricula = new MatriculaController(req,res);
     await Matricula.updateMatricula();
 });
