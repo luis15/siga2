@@ -1,13 +1,12 @@
 const express = require('express');
-const bodyParser = require('body-parser');
-const app = express();
 const alunoController = require('./controller/aluno');
 const DisciplinaController = require('./controller/disciplina');
 const MatriculaController = require('./controller/matriculaController');
+const MediaController = require('./controllers/mediaController');
 const db = require('./util/db');
 
 const app = express();
-const port = 8000;
+const PORT = 8000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -91,6 +90,11 @@ app.delete('/deleteAluno/:id', async (req, res) => {
 app.patch('/updateAluno/:id', async (req, res) => {
   const Aluno = new alunoController(req, res);
   await Aluno.updateAluno(req.params.id);
+});
+
+app.get('/notas', async (req, res) => {
+  const MediaAluno = new MediaController();
+  await Aluno.getNotas();
 });
 
 app.listen(PORT, () => {
