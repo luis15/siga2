@@ -1,4 +1,4 @@
-const db = require('../Media de Alunos/utils/db');
+const db = require('../util/db');
 
 class MediaModel {
   static getAllMedia(callback) {
