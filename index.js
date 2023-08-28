@@ -2,66 +2,11 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const alunoController = require('./controller/aluno');
-const DisciplinaController = require('./controller/disciplina');
-const MatriculaController = require('./controller/matriculaController');
 const db = require('./util/db');
-
-const app = express();
-const port = 8000;
+const PORT = 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.get('/disciplinas', async (req, res) => {
-    const Disciplina = new DisciplinaController(req, res);
-    await Disciplina.getAll();
-});
-
-app.get('/disciplina/:id', async (req, res) => {
-    const Disciplina = new DisciplinaController(req, res);
-    await Disciplina.get();
-});
-
-app.post('/disciplina',async (req, res) => {
-    const Disciplina = new DisciplinaController(req, res);
-    await Disciplina.post();
-});
-
-app.patch('/disciplina/:id',async (req, res) => {
-  const Disciplina = new DisciplinaController(req, res);
-  await Disciplina.update();
-});
-
-app.delete('/disciplina/:id',async (req, res) => {
-    const Disciplina = new DisciplinaController(req, res);
-    await Disciplina.delete();
-});
-
-//    Matriculas
-app.get('/matriculas', async (req, res) => {
-    const Matricula = new MatriculaController(req, res);
-    await Matricula.getAll();
-});
-
-app.get('/matricula/:id', async (req, res) =>{
-    const Matricula = new MatriculaController(req, res);
-    await Matricula.getMatricula();
-});
-
-app.post('/matricula', async (req, res) =>{
-    const Matricula = new MatriculaController(req, res);
-    await Matricula.postMatricula();
-});
-
-app.patch('/matricula/:id', async (req,res) => {
-    const Matricula = new MatriculaController(req,res);
-    await Matricula.updateMatricula();
-});
-
-app.delete('/matricula/:id', async (req, res) =>{
-    const Matricula = new MatriculaController(req, res);
-    await Matricula.deleteMatricula();
-});
 
 // Este é o endpoint raiz da API e deve retornar todos os alunos
 app.get('/alunos', async (req, res) => {
