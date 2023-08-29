@@ -15,12 +15,12 @@ class Disciplina{
     }
 
     async post(){
-        let nome = this.req.body.nome;
-        let ementa = this.req.body.ementa;
-        let codigoProfessor = this.req.body.codigoProfessor;
+        let nome = this.req.body.data.nome;
+        let ementa = this.req.body.data.ementa;
+        let codigoProfessor = this.req.body.data.codigoProfessor;
         let result = await this.disciplinaModel.postDisciplina(nome, ementa, codigoProfessor)
         if(result != null){
-            this.res.status(200).send({'status':'OK',
+            this.res.status(200).send({'status':'Adicionado com sucesso',
             'idCurso':result.insertId});
         }else{
             this.res.status(400).send({'status':'BAD REQUEST'});
@@ -32,14 +32,14 @@ class Disciplina{
         if(result.affectedRows == 0 ){
             this.res.status(400).send({"status":"ID not found"})
         }else{
-            this.res.status(200).send({"status":"Deleted"})
+            this.res.status(200).send({"status":"Deletado com sucesso"})
         };
     }
 
     async update(){
         let id = this.req.params.id;
         let mods = []
-        let params = this.req.body;
+        let params = this.req.body.data;
         for(let prop in params){
             if(params[prop].length != 0){
                 mods.push(`${prop} = '${params[prop]}'`);
@@ -49,7 +49,7 @@ class Disciplina{
         if(result.affectedRows == 0 ){
             this.res.status(400).send({"status":"Bad Request"})
         }else{
-            this.res.status(200).send({"status":"Updated"})
+            this.res.status(200).send({"status":"Alterado com sucesso"})
         };
     }
 }
