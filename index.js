@@ -4,9 +4,10 @@ const DisciplinaController = require('./controller/disciplina');
 const MatriculaController = require('./controller/matriculaController');
 const MediaController = require('./controllers/mediaController');
 const db = require('./util/db');
+require('dotenv').config();
 
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
