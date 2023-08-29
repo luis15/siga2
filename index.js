@@ -2,7 +2,8 @@ const express = require('express');
 const alunoController = require('./controller/aluno');
 const DisciplinaController = require('./controller/disciplina');
 const MatriculaController = require('./controller/matriculaController');
-const MediaController = require('./controller/mediaController');
+const MediaController = require('./controllers/mediaController');
+const FuncionarioController = require('./controller/funcionarioController');
 const AccessController = require('./controller/accessController');
 const db = require('./util/db');
 
@@ -171,6 +172,31 @@ app.get('/mediaAluno/:id', async (req, res) => {
     res.status(401).send({'status':'Não Autorizado'});
   }
 });
+
+app.get('/funcionarios', async (req, res) => {
+  const Funcionario = new FuncionarioController(req, res);
+  await Funcionario.getAll();
+})
+
+app.get('/funcionarios/:id', async (req, res) => {
+  const Funcionario = new FuncionarioController(req, res);
+  await Funcionario.getOne(req.params.id);
+})
+
+app.post('/funcionario', async (req, res) => {
+  const Funcionario = new FuncionarioController(req, res);
+  await Funcionario.create();
+})
+
+app.patch('/funcionario/:id', async (req, res) => {
+  const Funcionario = new FuncionarioController(req, res);
+  await Funcionario.update()
+})
+
+app.delete('/funcionario/:id', async (req, res) => {
+  const Funcionario = new FuncionarioController(req, res);
+  await Funcionario.delete()
+})
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
