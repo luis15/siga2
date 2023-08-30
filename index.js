@@ -14,11 +14,12 @@ const PORT = process.env.SERVER_PORT;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const Access = new AccessController();
+
 
 //Testes
-app.post('/', async (req, res) => {
-  if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "PATCH", "rota": "/funcionarios", "data": {...req.body.data}})){
+app.post('/:id', async (req, res) => {
+  const Access = new AccessController(req,res);
+  if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/notas", "data": {...req.body.data}}, req.params.id)){
     console.log('OK')
     res.status(200).send({'status':'OK'});
   }else{
@@ -28,6 +29,7 @@ app.post('/', async (req, res) => {
 });
 
 app.get('/disciplinas', async (req, res) => {
+  const Access = new AccessController(req,res);
     if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/disciplinas", "data": {...req.body.data}})){
       const Disciplina = new DisciplinaController(req, res);
       await Disciplina.getAll();
@@ -37,6 +39,7 @@ app.get('/disciplinas', async (req, res) => {
 });
 
 app.get('/disciplina/:id', async (req, res) => {
+  const Access = new AccessController(req,res);
   if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/disciplinas", "data": {...req.body.data}})){
     const Disciplina = new DisciplinaController(req, res);
     await Disciplina.get();
@@ -46,6 +49,7 @@ app.get('/disciplina/:id', async (req, res) => {
 });
 
 app.post('/disciplina',async (req, res) => {
+  const Access = new AccessController(req,res);
   if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "POST", "rota": "/disciplinas", "data": {...req.body.data}})){
     const Disciplina = new DisciplinaController(req, res);
     await Disciplina.post();
@@ -55,6 +59,7 @@ app.post('/disciplina',async (req, res) => {
 });
 
 app.patch('/disciplina/:id',async (req, res) => {
+  const Access = new AccessController(req,res);
   if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "PATCH", "rota": "/disciplinas", "data": {...req.body.data}})){
     const Disciplina = new DisciplinaController(req, res);
     await Disciplina.update();
@@ -64,6 +69,7 @@ app.patch('/disciplina/:id',async (req, res) => {
 });
 
 app.delete('/disciplina/:id',async (req, res) => {
+  const Access = new AccessController(req,res);
   if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "DELETE", "rota": "/disciplinas", "data": {...req.body.data}})){
     const Disciplina = new DisciplinaController(req, res);
     await Disciplina.delete();
@@ -74,6 +80,7 @@ app.delete('/disciplina/:id',async (req, res) => {
 
 //    Matriculas
 app.get('/matriculas', async (req, res) => {
+  const Access = new AccessController(req,res);
   if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/matriculas", "data": {...req.body.data}})){
     const Matricula = new MatriculaController(req, res);
     await Matricula.getAll();
@@ -83,6 +90,7 @@ app.get('/matriculas', async (req, res) => {
 });
 
 app.get('/matricula/:id', async (req, res) =>{
+  const Access = new AccessController(req,res);
   if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/matriculas", "data": {...req.body.data}})){
     const Matricula = new MatriculaController(req, res);
     await Matricula.getMatricula();
@@ -92,6 +100,7 @@ app.get('/matricula/:id', async (req, res) =>{
 });
 
 app.post('/matricula', async (req, res) =>{
+  const Access = new AccessController(req,res);
   if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "POST", "rota": "/matriculas", "data": {...req.body.data}})){
     const Matricula = new MatriculaController(req, res);
     await Matricula.postMatricula();
@@ -101,6 +110,7 @@ app.post('/matricula', async (req, res) =>{
 });
 
 app.patch('/matricula/:id', async (req,res) => {
+  const Access = new AccessController(req,res);
   if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "PATCH", "rota": "/matriculas", "data": {...req.body.data}})){
     const Matricula = new MatriculaController(req,res);
     await Matricula.updateMatricula();
@@ -110,6 +120,7 @@ app.patch('/matricula/:id', async (req,res) => {
 });
 
 app.delete('/matricula/:id', async (req, res) =>{
+  const Access = new AccessController(req,res);
   if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "DELETE", "rota": "/matriculas", "data": {...req.body.data}})){
     const Matricula = new MatriculaController(req, res);
     await Matricula.deleteMatricula();
@@ -120,6 +131,7 @@ app.delete('/matricula/:id', async (req, res) =>{
 
 // Este é o endpoint raiz da API e deve retornar todos os alunos
 app.get('/alunos', async (req, res) => {
+  const Access = new AccessController(req,res);
   if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/alunos", "data": {...req.body.data}})){
     const Aluno = new alunoController(req, res);
     await Aluno.getAll();
@@ -130,6 +142,7 @@ app.get('/alunos', async (req, res) => {
 
 // Este é o endpoint que deve retornar apenas um aluno, de acordo com o id passado na URL
 app.get('/alunos/:id', async (req, res) => {
+  const Access = new AccessController(req,res);
   if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/alunos", "data": {...req.body.data}})){
     const Aluno = new alunoController(req, res);
     await Aluno.getAluno(req.params.id);
@@ -140,6 +153,7 @@ app.get('/alunos/:id', async (req, res) => {
 
 // Este é o endpoint que deve criar um novo aluno
 app.post('/postAluno', async (req, res) => {
+  const Access = new AccessController(req,res);
   if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "POST", "rota": "/alunos", "data": {...req.body.data}})){
     const Aluno = new alunoController(req, res);
     await Aluno.createAluno();
@@ -150,6 +164,7 @@ app.post('/postAluno', async (req, res) => {
 
 // Este é o endpoint que deve deletar um aluno, de acordo com o id passado na URL
 app.delete('/deleteAluno/:id', async (req, res) => {
+  const Access = new AccessController(req,res);
   if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "PATCH", "rota": "/alunos", "data": {...req.body.data}})){
     const Aluno = new alunoController(req, res);
     await Aluno.deleteAluno(req.params.id);
@@ -160,6 +175,7 @@ app.delete('/deleteAluno/:id', async (req, res) => {
 
 // Este é o endpoint que deve atualizar um aluno, de acordo com o id passado na URL
 app.patch('/updateAluno/:id', async (req, res) => {
+  const Access = new AccessController(req,res);
   if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "DELETE", "rota": "/alunos", "data": {...req.body.data}})){
     const Aluno = new alunoController(req, res);
     await Aluno.updateAluno(req.params.id);
@@ -169,6 +185,7 @@ app.patch('/updateAluno/:id', async (req, res) => {
 });
 
 app.get('/mediaAluno/:id', async (req, res) => {
+  const Access = new AccessController(req,res);
   if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/mediaAluno", "data": {...req.body.data}})){
     const MediaAluno = new MediaController(req,res);
     await MediaAluno.getAllMedia();
@@ -178,6 +195,7 @@ app.get('/mediaAluno/:id', async (req, res) => {
 });
 
 app.get('/funcionarios', async (req, res) => {
+  const Access = new AccessController(req,res);
   if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/medifuncionariosaAluno", "data": {...req.body.data}})){
   const Funcionario = new FuncionarioController(req, res);
   await Funcionario.getAll();
@@ -187,6 +205,7 @@ app.get('/funcionarios', async (req, res) => {
 })
 
 app.get('/funcionarios/:id', async (req, res) => {
+  const Access = new AccessController(req,res);
   if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/funcionarios", "data": {...req.body.data}})){
   const Funcionario = new FuncionarioController(req, res);
   await Funcionario.getOne(req.params.id);
@@ -196,6 +215,7 @@ app.get('/funcionarios/:id', async (req, res) => {
 })
 
 app.post('/funcionario', async (req, res) => {
+  const Access = new AccessController(req,res);
   if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "POST", "rota": "/funcionarios", "data": {...req.body.data}})){
   const Funcionario = new FuncionarioController(req, res);
   await Funcionario.create();
@@ -205,6 +225,7 @@ app.post('/funcionario', async (req, res) => {
 })
 
 app.patch('/funcionario/:id', async (req, res) => {
+  const Access = new AccessController(req,res);
   if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "PATCH", "rota": "/funcionarios", "data": {...req.body.data}})){
   const Funcionario = new FuncionarioController(req, res);
   await Funcionario.update()
@@ -214,6 +235,7 @@ app.patch('/funcionario/:id', async (req, res) => {
 })
 
 app.delete('/funcionario/:id', async (req, res) => {
+  const Access = new AccessController(req,res);
   if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "DELETE", "rota": "/funcionarios", "data": {...req.body.data}})){
   const Funcionario = new FuncionarioController(req, res);
   await Funcionario.delete()

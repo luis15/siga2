@@ -6,6 +6,7 @@ class accessModel{
             return new Promise((resolve, reject) =>{
                 db.query(`SELECT * FROM funcionarios WHERE email = '${user.email}' AND senha = '${user.senha}'`,(err, result) => {
                     if (err) reject(err);
+                    console.log(result[0]);
                     resolve(result[0]);
                 })
             });
@@ -29,16 +30,25 @@ class accessModel{
         });
     }
 
-    async verifyDisciplina(id){
+    async verifyDisciplinaParam(id){
         return new Promise((resolve, reject) =>{
-            db.query(`SELECT * FROM disciplinas WHERE id = ${id}`,(err, result) => {
+            db.query(`SELECT f.nome AS professor, d.nome AS disciplina FROM funcionarios f JOIN disciplinas d ON f.id = d.codigoProfessor JOIN matriculas m ON d.id = m.codigoDisciplina JOIN notas n ON m.id = n.codigoMatricula WHERE n.id = ${id}`,(err, result) => {
+                if (err) reject(err);
+                resolve(result[0]);
+            })
+        });
+    }
+    //Pesquisando pelo codigo da matricula para fazer o post
+    async verifyDisciplinaData(id){
+        return new Promise((resolve, reject) =>{
+            db.query(`SELECT f.nome AS professor, d.nome AS disciplina FROM funcionarios f JOIN disciplinas d ON f.id = d.codigoProfessor JOIN matriculas m ON d.id = m.codigoDisciplina WHERE m.id = ${id}`,(err, result) => {
                 if (err) reject(err);
                 resolve(result[0]);
             })
         });
     }
 
-    async verifyAccess(info){
+    async verifyAccess(info,paramId){
         let checkAccess = info.info
         if((!checkAccess.hasOwnProperty('email') ||!checkAccess.hasOwnProperty('senha')) && (!checkAccess.hasOwnProperty('ra') ||!checkAccess.hasOwnProperty('senha')) ){
             return false;
@@ -101,12 +111,28 @@ class accessModel{
                 }
                 break;
             case 'P':
-                if(info.metodo == "GET" || info.metodo == "POST"){
+                if(info.metodo == "GET"){
                     if(info.rota == "/notas"){ //Verificar com Luiz, pois não existe relacionamento entre notas e professor
-                        let result = await this.verifyDisciplina(perm.id);
-                        console.log("Perm " + perm)
+                        let result = await this.verifyDisciplinaParam(paramId);
+                        console.log(perm.nome)
                         console.log("Result " + result)
-                        if(perm.id == result.id){
+                        if(!result){
+                            return "DisciplinaNFound"
+                        }
+                        if(perm.nome == result.professor){
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    }
+                }else if(info.metodo == "POST"){
+                    if(info.rota == "/notas"){
+                        console.log()
+                        let result = await this.verifyDisciplinaData(info.data.idMatricula);
+                        if(!result){
+                            return "DisciplinaNFound"
+                        }
+                        if(perm.nome == result.professor){
                             return true;
                         }else{
                             return false;
