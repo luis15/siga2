@@ -19,7 +19,10 @@ class GerenciadorNotas {
     }
 
     cadastrarNota(codigoMatricula, descritivo, valor) {
-        // verificar matrícula e valor, criar nova nota e adicioná-la à lista
+        // Verificar matrícula e valor, criar nova nota e adicioná-la à lista
+        const novaNota = new Nota(codigoMatricula, descritivo, valor);
+        this.notas.push(novaNota);
+        return novaNota.codigo;
     }
 
     consultarListaNotas() {
@@ -31,7 +34,13 @@ class GerenciadorNotas {
     }
 
     excluirNota(codigoNota) {
-        // excluir a nota
+        // Excluir a nota
+        const index = this.notas.findIndex(nota => nota.codigo === codigoNota);
+        if (index !== -1) {
+            this.notas.splice(index, 1);
+            return true;
+        }
+        return false;
     }
 }
 
