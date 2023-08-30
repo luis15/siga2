@@ -10,7 +10,7 @@ class accessModel{
                 })
             });
         }
-        if(user.hasOwnPropery('ra')){
+        if(user.hasOwnProperty('ra')){
             return new Promise((resolve, reject) =>{
                 db.query(`SELECT * FROM alunos WHERE ra = '${user.ra}' AND senha = '${user.senha}'`,(err, result) => {
                     if (err) reject(err);
@@ -39,8 +39,14 @@ class accessModel{
     }
 
     async verifyAccess(info){
-        console.log(info)
+        let checkAccess = info.info
+        if((!checkAccess.hasOwnProperty('email') ||!checkAccess.hasOwnProperty('senha')) && (!checkAccess.hasOwnProperty('ra') ||!checkAccess.hasOwnProperty('senha')) ){
+            return false;
+        }
         let perm = await this.verifyUser(info.info);
+        if(!perm){
+            return false;
+        }
         if(perm.hasOwnProperty('tipo')){
             switch(perm.tipo){
             case 'A':

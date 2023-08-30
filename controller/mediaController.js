@@ -9,7 +9,12 @@ class MediaController{
   }
 
   async getAllMedia() {
-    this.res.json(await this.mediaModel.getAllMedia(this.req.params.id));
+    let media = await this.mediaModel.getAllMedia(this.req.params.id);
+    if(media.length == 0){
+      this.res.status(400).send({'status':'Não foi encontrado nenhuma média para o aluno com esse id'});
+    }else{
+      this.res.json(media);
+    }
   }
 }
 

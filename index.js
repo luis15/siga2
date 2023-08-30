@@ -22,6 +22,7 @@ app.post('/', async (req, res) => {
     console.log('OK')
     res.status(200).send({'status':'OK'});
   }else{
+    console.log("Aqui??")
     res.status(401).send({'status':'Não Autorizado'});
   }
 });
@@ -30,6 +31,8 @@ app.get('/disciplinas', async (req, res) => {
     if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/disciplinas", "data": {...req.body.data}})){
       const Disciplina = new DisciplinaController(req, res);
       await Disciplina.getAll();
+    }else{
+      res.status(401).send({'status':'Não Autorizado'});
     }
 });
 
