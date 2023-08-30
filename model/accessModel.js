@@ -127,7 +127,6 @@ class accessModel{
                     }
                 }else if(info.metodo == "POST"){
                     if(info.rota == "/notas"){
-                        console.log()
                         let result = await this.verifyDisciplinaData(info.data.idMatricula);
                         if(!result){
                             return "DisciplinaNFound"
