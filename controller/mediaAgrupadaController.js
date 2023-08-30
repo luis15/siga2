@@ -1,22 +1,18 @@
 const mediaAgrupadaModel = require('../model/mediaAgrupadaModel');
 
 class mediaAgrupadaController {
-    async getMediaTurma(req, res) {
-      try {
-        const { codigoDisciplina, semestre } = req.body;
-        const model = new mediaAgrupadaModel();
-        const result = await model.getMediaTurma(codigoDisciplina, semestre);
-        
-        res.json({
-          data: result
-        });
-      } catch (error) {
-        console.log(error);
-        res.json({
-          status: "Erro!"
-        });
-      }
-    }
+  constructor(req,res){
+    this.req = req;
+    this.res = res;
+    this.mediaAgrupadaModel = new mediaAgrupadaModel(); 
+}
+  async getMediaTurma() {
+      const id = this.params.id;
+      const semestre = this.params.semestre;
+      this.res.json(
+        await this.mediaAgrupadaModel.mediaAgrupada(id, semestre)
+        );
   }
+}
 
 module.exports = mediaAgrupadaController;

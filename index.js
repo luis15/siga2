@@ -98,6 +98,11 @@ app.get('/notas', async (req, res) => {
   await Aluno.getNotas();
 });
 
+app.get('/mediaAgrupada/:id/:semestre', async (req, res) => {
+  const mediaAgrupada = new mediaAgrupadaController(req, res);
+  await mediaAgrupada.getMediaTurma(req.params.id, req.params.semestre); 
+});
+
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
