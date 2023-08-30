@@ -1,3 +1,5 @@
+const db = require('../util/db');
+
 class Nota {
     constructor(codigoMatricula, descritivo, valor) {
         this.codigoMatricula = codigoMatricula;
