@@ -29,8 +29,11 @@ class Disciplina{
 
     async delete(){
         let result = await this.disciplinaModel.deleteDisciplina(this.req.params.id);
+        console.log
         if(result.affectedRows == 0 ){
             this.res.status(400).send({"status":"ID not found"})
+        }else if(result == "ErrorMatriculas"){
+            this.res.status(400).send({"status":"Não foi possivel excluir a disciplina pois possui matriculas!"})
         }else{
             this.res.status(200).send({"status":"Deletado com sucesso"})
         };

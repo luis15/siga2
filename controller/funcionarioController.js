@@ -17,12 +17,12 @@ class FuncionarioController {
     }
 
     async create() {
-        let email = this.req.body.email;
-        let senha = this.req.body.senha;
-        let nome = this.req.body.nome;
-        let cpf = this.req.body.cpf;
-        let endereco = this.req.body.endereco;
-        let tipo = this.req.body.tipo;
+        let email = this.req.body.data.email;
+        let senha = this.req.body.data.senha;
+        let nome = this.req.body.data.nome;
+        let cpf = this.req.body.data.cpf;
+        let endereco = this.req.body.data.endereco;
+        let tipo = this.req.body.data.tipo;
 
         if(tipo != "P" & tipo != "S" & tipo != "A") {
             this.res.status(400).send({'status': 'Tipo de funcionario inválido!'})
@@ -37,7 +37,7 @@ class FuncionarioController {
     }
 
     async update() {
-        this.res.json(await this.funcionarioModel.updateFuncionario(this.req.params.id, this.req.body))
+        this.res.json(await this.funcionarioModel.updateFuncionario(this.req.params.id, this.req.body.data))
     }
 
     async delete() {

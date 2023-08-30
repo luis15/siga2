@@ -29,15 +29,29 @@ class DisciplinaModel {
     }
 
     async deleteDisciplina(id) {
-        return new Promise((resolve, reject) =>{
-            db.query("DELETE FROM disciplinas WHERE id = ?",[id],(err, result) => {
-                if (err) throw err;
-                resolve(result);
+        let matricula =  new Promise((resolve, reject) =>{
+            db.query(`SELECT * FROM matriculas WHERE codigoDisciplina = ${id}`,(err, result) => {
+            if (err) reject(err);
+            resolve(result);
             })
         });
+
+        console.log(await matricula)
+
+        if(JSON.stringify(await matricula)== '[]'){
+            return new Promise((resolve, reject) =>{
+                db.query("DELETE FROM disciplinas WHERE id = ?",[id],(err, result) => {
+                    if (err) throw err;
+                    resolve(result);
+                })
+            });
+        }else{
+            return "ErrorMatriculas";
+        }
     }
 
     async updateDisciplina(id, mods) {
+
         return new Promise((resolve, reject) =>{
             db.query(`UPDATE disciplinas SET ${mods} WHERE id = ${id}`,(err, result) => {
                 if (err) reject(err);

@@ -2,13 +2,14 @@ const express = require('express');
 const alunoController = require('./controller/aluno');
 const DisciplinaController = require('./controller/disciplina');
 const MatriculaController = require('./controller/matriculaController');
-const MediaController = require('./controllers/mediaController');
+const MediaController = require('./controller/mediaController');
 const FuncionarioController = require('./controller/funcionarioController');
 const AccessController = require('./controller/accessController');
+require('dotenv').config();
 const db = require('./util/db');
 
 const app = express();
-const PORT = 8000;
+const PORT = process.env.SERVER_PORT;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -174,28 +175,48 @@ app.get('/mediaAluno/:id', async (req, res) => {
 });
 
 app.get('/funcionarios', async (req, res) => {
+  if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/medifuncionariosaAluno", "data": {...req.body.data}})){
   const Funcionario = new FuncionarioController(req, res);
   await Funcionario.getAll();
+  }else{
+    res.status(401).send({'status':'Não Autorizado'});
+  }
 })
 
 app.get('/funcionarios/:id', async (req, res) => {
+  if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/funcionarios", "data": {...req.body.data}})){
   const Funcionario = new FuncionarioController(req, res);
   await Funcionario.getOne(req.params.id);
+  }else{
+    res.status(401).send({'status':'Não Autorizado'});
+  }
 })
 
 app.post('/funcionario', async (req, res) => {
+  if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "POST", "rota": "/funcionarios", "data": {...req.body.data}})){
   const Funcionario = new FuncionarioController(req, res);
   await Funcionario.create();
+  }else{
+    res.status(401).send({'status':'Não Autorizado'});
+  }
 })
 
 app.patch('/funcionario/:id', async (req, res) => {
+  if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "PATCH", "rota": "/funcionarios", "data": {...req.body.data}})){
   const Funcionario = new FuncionarioController(req, res);
   await Funcionario.update()
+  }else{
+    res.status(401).send({'status':'Não Autorizado'});
+  }
 })
 
 app.delete('/funcionario/:id', async (req, res) => {
+  if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "DELETE", "rota": "/funcionarios", "data": {...req.body.data}})){
   const Funcionario = new FuncionarioController(req, res);
   await Funcionario.delete()
+  }else{
+    res.status(401).send({'status':'Não Autorizado'});
+  }
 })
 
 app.listen(PORT, () => {
