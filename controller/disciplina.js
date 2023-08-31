@@ -1,4 +1,5 @@
 const DisciplinaModel = require('../model/disciplinaModel');
+const funcionarioModel = require('../model/funcionarioModel');
 class Disciplina{
     constructor(req,res){
         this.req = req;
@@ -18,12 +19,18 @@ class Disciplina{
         let nome = this.req.body.data.nome;
         let ementa = this.req.body.data.ementa;
         let codigoProfessor = this.req.body.data.codigoProfessor;
-        let result = await this.disciplinaModel.postDisciplina(nome, ementa, codigoProfessor)
-        if(result != null){
-            this.res.status(200).send({'status':'Adicionado com sucesso',
-            'idCurso':result.insertId});
+        let funcionario = new funcionarioModel();
+        let VerificaProfessor = await funcionario.getFuncionario(codigoProfessor);
+        if(VerificaProfessor[0].tipo == "P"){
+            let result = await this.disciplinaModel.postDisciplina(nome, ementa, codigoProfessor)
+            if(result != null){
+                this.res.status(200).send({'status':'Adicionado com sucesso',
+                'idCurso':result.insertId});
+            }else{
+                this.res.status(400).send({'status':'BAD REQUEST'});
+            }
         }else{
-            this.res.status(400).send({'status':'BAD REQUEST'});
+            this.res.status(400).send({'status':'Esse não é codigo de um professor válido'});
         }
     }
 

@@ -68,7 +68,7 @@ class accessModel{
             switch(perm.tipo){
             case 'A':
                 if(info.metodo == "GET" || info.metodo == "POST" || info.metodo == "PATCH" || info.metodo == "DELETE"){
-                    if(info.rota == "/funcionario" || info.rota == "/matricula" || info.rota == "/aluno" || info.rota == "/disciplinas" || info.rota == "/notas" || info.rota == "/mediaTurma" ){
+                    if(info.rota == "/funcionarios" || info.rota == "/matriculas" || info.rota == "/alunos" || info.rota == "/disciplinas" || info.rota == "/notas" || info.rota == "/mediaTurma" ){
                         return true;
                     }
                 }

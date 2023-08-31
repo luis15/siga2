@@ -30,12 +30,23 @@ class AlunoModel{
   }
 
   async deleteAluno(id){
-    return new Promise((resolve, reject) => {
-      db.query('DELETE FROM alunos WHERE id = ?', id, (error, results) => {
-        if (error) reject(error);
-        resolve(results);
-      });
-    })
+    let matricula =  new Promise((resolve, reject) =>{
+      db.query(`SELECT * FROM matriculas WHERE codigoDisciplina = ${id}`,(err, result) => {
+      if (err) reject(err);
+      resolve(result);
+      })
+    });
+
+    if(JSON.stringify(await matricula)== '[]'){
+      return new Promise((resolve, reject) => {
+        db.query('DELETE FROM alunos WHERE id = ?', id, (error, results) => {
+          if (error) reject(error);
+          resolve(results);
+        });
+      })
+    }else{
+      return "ErrorMatriculas";
+    }
   }
 
   async updateAluno(id, alunoAtualizado) {

@@ -16,14 +16,13 @@ class MatriculaController{
     }
 
     async postMatricula(){
-        let id = this.req.params.id;
-        let codAluno = this.req.body.codAluno;
-        let codDisciplina = this.req.body.codDisciplina;
-        let semestre = this.req.body.semestre;
-        let result = await this.MatriculaModel.updateMatricula(id,codAluno,codDisciplina,semestre);
-        if(result.length != 0  && verificaSemestre(semestre)){
-            this.res.status(200).send({'status':'Inserido'});
-        } else {
+        let codAluno = this.req.body.data.codAluno;
+        let codDisciplina = this.req.body.data.codDisciplina;
+        let semestre = this.verificaSemestre(this.req.body.data.semestre);
+        let result = await this.MatriculaModel.postMatricula(codAluno,codDisciplina,semestre);
+        if(result.length != 0){
+            this.res.status(200).send({'status':'Inserido', "idMatricula": `${result.insertId}`});
+        }else{
             this.res.status(400).send({'status':'ERROR post'});
         }
     }
@@ -31,14 +30,15 @@ class MatriculaController{
     async updateMatricula(){
         let id = this.req.params.id;
         let modification = [];
-        let params = this.req.body;
+        let params = this.req.body.data;
         for(let prop in params){
             if(params[prop].length != 0){
                 modification.push(`${prop} = '${params[prop]}'`);
             }
         }
+        console.log(modification)
         let result = await this.MatriculaModel.updateMatricula(id, modification);
-        if(result.length != 0  && verificaSemestre(semestre)){
+        if(result.affectedRows != 0){
             this.res.status(200).send({'status':'Modificado'});
         } else {
             this.res.status(400).send({'status':'ERROR update'});
@@ -46,17 +46,18 @@ class MatriculaController{
     }
 
     async deleteMatricula(){
-        console.log('passei aqui')
         let result = await this.MatriculaModel.getMatricula(this.req.params.id);
-        if(result.length != 0){
+        if(result.affectedRows != 0){
             this.res.status(200).send({'status':'Deletado'});
             this.MatriculaModel.deleteMatricula(this.req.params.id);
-        } else {
+        }else if(result == "ErrorNotas"){
+            this.res.status(400).send({'status':'Não foi possivel excluir a matricula pois possui notas!'});
+        }else {
             this.res.status(400).send({'status':'ERROR delete'});
         }
     }
 
-    async verificaSemestre(semestre) {
+    verificaSemestre(semestre) {
         const regex = /^\d{4}\.(1|2)$/;
         return regex.test(semestre);
     }

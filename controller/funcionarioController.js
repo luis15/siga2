@@ -30,18 +30,30 @@ class FuncionarioController {
 
         try {
             let retorno = await this.funcionarioModel.createFuncionario(email, senha, nome, cpf, endereco, tipo);
-            this.res.json({ "id": `${await retorno.insertId}` });
+            this.res.json({ "status": "Adicionado com sucesso","id": `${await retorno.insertId}` });
         } catch (error) {
             this.res.status(400).send(error);
         }
     }
 
     async update() {
-        this.res.json(await this.funcionarioModel.updateFuncionario(this.req.params.id, this.req.body.data))
+        let result = await this.funcionarioModel.updateFuncionario(this.req.params.id, this.req.body.data);
+        if (result.affectedRows == 0) {
+            this.res.status(400).send({ "status": "Bad Request" })
+        } else {
+            this.res.status(200).send({ "status": "Alterado com sucesso" })
+        };
     }
 
     async delete() {
-        this.res.json(await this.funcionarioModel.deleteFuncionario(this.req.params.id))
+        let result = await this.funcionarioModel.deleteFuncionario(this.req.params.id);
+        if (result.affectedRows == 0) {
+            this.res.status(400).send({ "status": "Bad Request" })
+        }else if(result == "ErrorDisciplinas" ){
+            this.res.status(400).send({ "status": "Existem disciplinas vinculadas a esse professor" })
+        } else {
+            this.res.status(200).send({ "status": "Deletado com sucesso" })
+        };
     }
 
 }

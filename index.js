@@ -189,7 +189,7 @@ app.patch('/updateAluno/:id', async (req, res) => {
 
 app.get('/funcionarios', async (req, res) => {
   const Access = new AccessController(req,res);
-  if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/medifuncionariosaAluno", "data": {...req.body.data}})){
+  if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/funcionarios", "data": {...req.body.data}})){
   const Funcionario = new FuncionarioController(req, res);
   await Funcionario.getAll();
   }else{

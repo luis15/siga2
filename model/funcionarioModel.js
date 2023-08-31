@@ -70,9 +70,11 @@ class FuncionarioModel {
                     resolve(result);
                 })
             })
+        }else{
+            return "ErrorDisciplinas"
         }
 
-        return {"erro": "Esse professor possui matérias!"}
+        
 
     }
 

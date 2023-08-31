@@ -11,7 +11,7 @@ class NotasController {
         this.res.json(await this.NotaModel.getNotas());
     }
     
-    async getNota(id){
+    async getNota(){
         this.res.json(await this.NotaModel.getNota(this.req.params.id));
     }
 
