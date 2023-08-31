@@ -74,7 +74,7 @@ class accessModel{
                 }
                 break;
             case 'S':
-                if(info.rota == "/matricula" ||  info.rota == "/disciplinas" ||  info.rota == "/alunos" || info.rota == "/notas"){
+                if(info.rota == "/matriculas" ||  info.rota == "/disciplinas" ||  info.rota == "/alunos" || info.rota == "/notas"){
                     if(info.metodo == "GET" || info.metodo == "POST" || info.metodo == "PATCH"){
                         return true;
                     }
