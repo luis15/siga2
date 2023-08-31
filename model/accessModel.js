@@ -6,7 +6,6 @@ class accessModel{
             return new Promise((resolve, reject) =>{
                 db.query(`SELECT * FROM funcionarios WHERE email = '${user.email}' AND senha = '${user.senha}'`,(err, result) => {
                     if (err) reject(err);
-                    console.log(result[0]);
                     resolve(result[0]);
                 })
             });
@@ -47,6 +46,14 @@ class accessModel{
             })
         });
     }
+    async verifyDisciplinaProf(id){
+        return new Promise((resolve, reject) =>{
+            db.query(`SELECT d.nome AS disciplina, f.nome AS professor FROM disciplinas d JOIN funcionarios f ON d.codigoProfessor = f.id WHERE d.id = ${id}`,(err, result) => {
+                if (err) reject(err);
+                resolve(result[0]);
+            })
+        });
+    }
 
     async verifyAccess(info,paramId){
         let checkAccess = info.info
@@ -61,7 +68,7 @@ class accessModel{
             switch(perm.tipo){
             case 'A':
                 if(info.metodo == "GET" || info.metodo == "POST" || info.metodo == "PATCH" || info.metodo == "DELETE"){
-                    if(info.rota == "/funcionario" || info.rota == "/matricula" || info.rota == "/aluno" || info.rota == "/disciplinas" || info.rota == "/notas"){
+                    if(info.rota == "/funcionario" || info.rota == "/matricula" || info.rota == "/aluno" || info.rota == "/disciplinas" || info.rota == "/notas" || info.rota == "/mediaTurma" ){
                         return true;
                     }
                 }
@@ -108,14 +115,26 @@ class accessModel{
                     }else{
                         return false;
                     }
+                }else if(info.rota == "/mediaTurma"){
+                    if(info.metodo == "GET"){
+                        return true;
+                    }
                 }
                 break;
             case 'P':
                 if(info.metodo == "GET"){
                     if(info.rota == "/notas"){ //Verificar com Luiz, pois não existe relacionamento entre notas e professor
                         let result = await this.verifyDisciplinaParam(paramId);
-                        console.log(perm.nome)
-                        console.log("Result " + result)
+                        if(!result){
+                            return "DisciplinaNFound"
+                        }
+                        if(perm.nome == result.professor){
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    }else if(info.rota == "/mediaTurma"){
+                        let result = await this.verifyDisciplinaProf(info.data.idDisciplina);
                         if(!result){
                             return "DisciplinaNFound"
                         }

@@ -5,8 +5,10 @@ const MatriculaController = require('./controller/matriculaController');
 const MediaController = require('./controller/mediaController');
 const FuncionarioController = require('./controller/funcionarioController');
 const AccessController = require('./controller/accessController');
+const NotasController = require('./controller/notasController');
 require('dotenv').config();
 const db = require('./util/db');
+const mediaAgrupadaController = require('./controller/mediaAgrupadaController');
 
 const app = express();
 const PORT = process.env.SERVER_PORT;
@@ -17,9 +19,9 @@ app.use(express.urlencoded({ extended: true }));
 
 
 //Testes
-app.post('/:id', async (req, res) => {
+app.post('/', async (req, res) => {
   const Access = new AccessController(req,res);
-  if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/notas", "data": {...req.body.data}}, req.params.id)){
+  if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/mediaTurma", "data": {...req.body.data}}, req.params.id)){
     console.log('OK')
     res.status(200).send({'status':'OK'});
   }else{
@@ -184,15 +186,6 @@ app.patch('/updateAluno/:id', async (req, res) => {
   }
 });
 
-app.get('/mediaAluno/:id', async (req, res) => {
-  const Access = new AccessController(req,res);
-  if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/mediaAluno", "data": {...req.body.data}})){
-    const MediaAluno = new MediaController(req,res);
-    await MediaAluno.getAllMedia();
-  }else{
-    res.status(401).send({'status':'Não Autorizado'});
-  }
-});
 
 app.get('/funcionarios', async (req, res) => {
   const Access = new AccessController(req,res);
@@ -243,6 +236,69 @@ app.delete('/funcionario/:id', async (req, res) => {
     res.status(401).send({'status':'Não Autorizado'});
   }
 })
+
+//Notas
+app.get('/notas', async (req, res) => {
+  const Access = new AccessController(req,res);
+  if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/notas", "data": {...req.body.data}})){
+    const Notas = new NotasController(req,res);
+    await Notas.getNotas();
+  }else{
+    res.status(401).send({'status':'Não Autorizado'});
+  }
+});
+
+app.get('/nota/:id', async (req, res) => {
+  const Access = new AccessController(req,res);
+  if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/notas", "data": {...req.body.data}})){
+    const Notas = new NotasController(req,res);
+    await Notas.getNota();
+  }else{
+    res.status(401).send({'status':'Não Autorizado'});
+  }
+});
+
+app.post('/nota', async (req, res) => {
+  const Access = new AccessController(req,res);
+  if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "POST", "rota": "/notas", "data": {...req.body.data}})){
+    const Notas = new NotasController(req,res);
+    await Notas.createNota();
+  }else{
+    res.status(401).send({'status':'Não Autorizado'});
+  }
+});
+
+app.delete('/nota/:id', async (req, res) => {
+  const Access = new AccessController(req,res);
+  if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "DELETE", "rota": "/notas", "data": {...req.body.data}})){
+    const Notas = new NotasController(req,res);
+    await Notas.deleteNota();
+  }else{
+    res.status(401).send({'status':'Não Autorizado'});
+  }
+});
+
+app.get('/mediaAluno/:id', async (req, res) => {
+  const Access = new AccessController(req,res);
+  if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/mediaAluno", "data": {...req.body.data}})){
+    const MediaAluno = new MediaController(req,res);
+    await MediaAluno.getAllMedia();
+  }else{
+    res.status(401).send({'status':'Não Autorizado'});
+  }
+});
+
+app.get('/mediaTurma', async (req, res) => {
+  const Access = new AccessController(req,res);
+  if(await Access.verifyAccess({"info":{...req.body.infos}, "metodo": "GET", "rota": "/mediaTurma", "data": {...req.body.data}})){
+    const MediaTurma = new mediaAgrupadaController(req,res);
+    await MediaTurma.getMediaTurma();
+  }else{
+    res.status(401).send({'status':'Não Autorizado'});
+  }
+});
+
+
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
